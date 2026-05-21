@@ -1,0 +1,74 @@
+<!DOCTYPE html>
+
+<html>
+
+<head>
+
+<title>Login</title>
+
+<link
+rel="stylesheet"
+href="{{ url_for('static',filename='style.css') }}">
+
+</head>
+
+<body>
+
+<div class="container">
+
+<div class="logo">
+
+📝
+
+</div>
+
+<h1 class="title">
+
+Welcome Back
+
+</h1>
+
+<p class="subtitle">
+
+Manage your tasks beautifully
+
+</p>
+
+<form method="POST">
+
+<input
+name="username"
+placeholder="Username"
+required>
+
+<input
+name="password"
+type="password"
+placeholder="Password"
+required>
+
+<button>
+
+Login
+
+</button>
+
+</form>
+
+<div class="link">
+
+No account?
+
+<a href="/signup">
+
+Create one
+
+</a>
+
+</div>
+
+</div>
+
+</body>
+
+</html>

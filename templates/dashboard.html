@@ -1,0 +1,95 @@
+<!DOCTYPE html>
+
+<html>
+
+<head>
+
+<link
+rel="stylesheet"
+href="{{ url_for(
+'static',
+filename='style.css'
+)}}">
+
+</head>
+
+<body>
+
+<div class="container">
+
+<a
+href="/logout"
+class="logout">
+
+Logout
+
+</a>
+
+<h1 class="title">
+
+Task Manager
+
+</h1>
+
+<form
+action="/add"
+method="POST"
+class="task-form">
+
+<input
+name="task"
+placeholder="Add new task">
+
+<button>
+
+Add
+
+</button>
+
+</form>
+
+{% for task in tasks %}
+
+<div
+class="task
+{{task.status.lower()}}">
+
+<h3>
+
+{{task.title}}
+
+</h3>
+
+<p>
+
+{{task.status}}
+
+</p>
+
+<div class="actions">
+
+<a
+href="/complete/{{task.id}}">
+
+✓ Complete
+
+</a>
+
+<a
+href="/delete/{{task.id}}">
+
+🗑 Delete
+
+</a>
+
+</div>
+
+</div>
+
+{% endfor %}
+
+</div>
+
+</body>
+
+</html>
