@@ -246,6 +246,16 @@ def logout():
 
     return redirect("/")
 
+#-----------------------
+
+@app.route("/dbcheck")
+def dbcheck():
+    db_url = os.getenv("DATABASE_URL")
+
+    if db_url:
+        return f"FOUND: {db_url[:30]}..."
+    else:
+        return "DATABASE_URL NOT FOUND"
 
 if __name__ == "__main__":
     app.run(debug=True)
