@@ -1,15 +1,19 @@
 <!DOCTYPE html>
-
-<html>
+<html lang="en">
 
 <head>
 
-<link
-rel="stylesheet"
-href="{{ url_for(
-'static',
-filename='style.css'
-)}}">
+    <meta charset="UTF-8">
+
+    <meta
+        name="viewport"
+        content="width=device-width, initial-scale=1.0">
+
+    <title>SmartTask AI</title>
+
+    <link
+        rel="stylesheet"
+        href="{{ url_for('static', filename='style.css') }}">
 
 </head>
 
@@ -17,76 +21,213 @@ filename='style.css'
 
 <div class="container">
 
-<a
-href="/logout"
-class="logout">
+    <div class="top-bar">
 
-Logout
+        <h1 class="title">
+            🚀 SmartTask AI
+        </h1>
 
-</a>
+        <div>
 
-<h1 class="title">
+            <a href="/profile" class="profile-btn">
+                👤 Profile
+            </a>
 
-Task Manager
+            <a href="/logout" class="logout">
+                Logout
+            </a>
 
-</h1>
+        </div>
 
-<form
-action="/add"
-method="POST"
-class="task-form">
+    </div>
 
-<input
-name="task"
-placeholder="Add new task">
+    <!-- SEARCH -->
 
-<button>
+    <form
+        method="GET"
+        action="/"
+        class="search-form">
 
-Add
+        <input
+            type="text"
+            name="search"
+            placeholder="🔍 Search tasks...">
 
-</button>
+        <button>
+            Search
+        </button>
 
-</form>
+    </form>
 
-{% for task in tasks %}
+    <!-- STATISTICS -->
 
-<div
-class="task
-{{task.status.lower()}}">
+    <div class="stats">
 
-<h3>
+        <div class="card">
+            <h2>{{ total }}</h2>
+            <p>Total Tasks</p>
+        </div>
 
-{{task.title}}
+        <div class="card">
+            <h2>{{ completed }}</h2>
+            <p>Completed</p>
+        </div>
 
-</h3>
+        <div class="card">
+            <h2>{{ pending }}</h2>
+            <p>Pending</p>
+        </div>
 
-<p>
+        <div class="card">
+            <h2>{{ progress }}%</h2>
+            <p>Progress</p>
+        </div>
 
-{{task.status}}
+    </div>
 
-</p>
+    <!-- PROGRESS BAR -->
 
-<div class="actions">
+    <div class="progress-container">
 
-<a
-href="/complete/{{task.id}}">
+        <div
+            class="progress-bar"
+            style="width: {{ progress }}%;">
 
-✓ Complete
+        </div>
 
-</a>
+    </div>
 
-<a
-href="/delete/{{task.id}}">
+    <p class="progress-text">
+        {{ progress }}% Completed
+    </p>
 
-🗑 Delete
+    <!-- ADD TASK -->
 
-</a>
+    <form
+        action="/add"
+        method="POST"
+        class="task-form">
 
-</div>
+        <input
+            type="text"
+            name="task"
+            placeholder="Task Title"
+            required>
 
-</div>
+        <textarea
+            name="description"
+            placeholder="Task Description">
+        </textarea>
 
-{% endfor %}
+        <select name="category">
+
+            <option value="Study">
+                📚 Study
+            </option>
+
+            <option value="Work">
+                💼 Work
+            </option>
+
+            <option value="Personal">
+                🏠 Personal
+            </option>
+
+            <option value="Fitness">
+                🏋 Fitness
+            </option>
+
+            <option value="General">
+                📌 General
+            </option>
+
+        </select>
+
+        <select name="priority">
+
+            <option value="High">
+                🔴 High
+            </option>
+
+            <option value="Medium" selected>
+                🟡 Medium
+            </option>
+
+            <option value="Low">
+                🟢 Low
+            </option>
+
+        </select>
+
+        <input
+            type="date"
+            name="due_date">
+
+        <button type="submit">
+            ➕ Add Task
+        </button>
+
+    </form>
+
+    <!-- TASKS -->
+
+    {% for task in tasks %}
+
+    <div class="task-card">
+
+        <h3>
+            {{ task.title }}
+        </h3>
+
+        {% if task.description %}
+        <p>
+            {{ task.description }}
+        </p>
+        {% endif %}
+
+        <div class="task-info">
+
+            <span>
+                📂 {{ task.category }}
+            </span>
+
+            <span>
+                ⚡ {{ task.priority }}
+            </span>
+
+            <span>
+                📅 {{ task.due_date }}
+            </span>
+
+            <span>
+                {{ task.status }}
+            </span>
+
+        </div>
+
+        <div class="actions">
+
+            <a
+                href="/complete/{{ task.id }}"
+                class="complete-btn">
+
+                ✓ Complete
+
+            </a>
+
+            <a
+                href="/delete/{{ task.id }}"
+                class="delete-btn">
+
+                🗑 Delete
+
+            </a>
+
+        </div>
+
+    </div>
+
+    {% endfor %}
 
 </div>
 

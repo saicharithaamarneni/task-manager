@@ -1,0 +1,149 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+
+    <meta charset="UTF-8">
+
+    <meta
+        name="viewport"
+        content="width=device-width, initial-scale=1.0">
+
+    <title>Profile | SmartTask AI</title>
+
+    <link
+        rel="stylesheet"
+        href="{{ url_for('static', filename='style.css') }}">
+
+</head>
+
+<body>
+
+<div class="container">
+
+    <div class="top-bar">
+
+        <h1 class="title">
+            👤 User Profile
+        </h1>
+
+        <a href="/" class="profile-btn">
+            ← Dashboard
+        </a>
+
+    </div>
+
+    <div class="profile-card">
+
+        <h2>
+            {{ user.username }}
+        </h2>
+
+        <p>
+            Member Since:
+            <strong>
+                {{ user.created_at.strftime('%d %B %Y') }}
+            </strong>
+        </p>
+
+    </div>
+
+    <div class="stats">
+
+        <div class="card">
+
+            <h2>
+                {{ total }}
+            </h2>
+
+            <p>
+                Total Tasks
+            </p>
+
+        </div>
+
+        <div class="card">
+
+            <h2>
+                {{ completed }}
+            </h2>
+
+            <p>
+                Completed Tasks
+            </p>
+
+        </div>
+
+        <div class="card">
+
+            <h2>
+                {{ pending }}
+            </h2>
+
+            <p>
+                Pending Tasks
+            </p>
+
+        </div>
+
+        <div class="card">
+
+            <h2>
+                {{ progress }}%
+            </h2>
+
+            <p>
+                Productivity Score
+            </p>
+
+        </div>
+
+    </div>
+
+    <div class="progress-section">
+
+        <h3>
+            Task Completion Progress
+        </h3>
+
+        <div class="progress-container">
+
+            <div
+                class="progress-bar"
+                style="width: {{ progress }}%;">
+
+            </div>
+
+        </div>
+
+        <p class="progress-text">
+            {{ progress }}% Completed
+        </p>
+
+    </div>
+
+    <div class="profile-actions">
+
+        <a
+            href="/"
+            class="profile-btn">
+
+            📝 Back to Dashboard
+
+        </a>
+
+        <a
+            href="/logout"
+            class="logout">
+
+            🚪 Logout
+
+        </a>
+
+    </div>
+
+</div>
+
+</body>
+
+</html>

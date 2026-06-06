@@ -6,18 +6,17 @@ from flask import (
     session
 )
 
-from models import db, User, Task
+from werkzeug.security import (
+    generate_password_hash,
+    check_password_hash
+)
 
+from models import db, User, Task
 
 app = Flask(__name__)
 
-app.config[
-    "SQLALCHEMY_DATABASE_URI"
-] = "sqlite:///database.db"
-
-app.config[
-    "SQLALCHEMY_TRACK_MODIFICATIONS"
-] = False
+app.config["SQLALCHEMY_DATABASE_URI"] = "sqlite:///database.db"
+app.config["SQLALCHEMY_TRACK_MODIFICATIONS"] = False
 
 app.secret_key = "taskmanager123"
 
@@ -31,20 +30,52 @@ with app.app_context():
 
 @app.route("/")
 def home():
+    if "user_id" not in session:
+        return render_template("index.html")
 
-    if "user_id" in session:
+    user = User.query.get(session["user_id"])
 
-        tasks = Task.query.filter_by(
-            user_id=session["user_id"]
-        ).all()
+    if not user:
+        session.clear()
+        return redirect("/login")
 
-        return render_template(
-            "dashboard.html",
-            tasks=tasks
+    search = request.args.get("search", "")
+
+    query = Task.query.filter_by(
+        user_id=session["user_id"]
+    )
+
+    if search:
+        query = query.filter(
+            Task.title.contains(search)
+        )
+
+    tasks = query.all()
+
+    completed = len(
+        [t for t in tasks if t.status == "Completed"]
+    )
+
+    pending = len(
+        [t for t in tasks if t.status == "Pending"]
+    )
+
+    total = len(tasks)
+
+    progress = 0
+
+    if total > 0:
+        progress = round(
+            (completed / total) * 100
         )
 
     return render_template(
-        "index.html"
+        "dashboard.html",
+        tasks=tasks,
+        total=total,
+        completed=completed,
+        pending=pending,
+        progress=progress
     )
 
 
@@ -55,27 +86,28 @@ def signup():
 
     if request.method == "POST":
 
-        user = User.query.filter_by(
+        existing_user = User.query.filter_by(
             username=request.form["username"]
         ).first()
 
-        if user:
+        if existing_user:
             return redirect("/login")
+
+        hashed_password = generate_password_hash(
+            request.form["password"]
+        )
 
         new_user = User(
             username=request.form["username"],
-            password=request.form["password"]
+            password=hashed_password
         )
 
         db.session.add(new_user)
-
         db.session.commit()
 
         return redirect("/login")
 
-    return render_template(
-        "signup.html"
-    )
+    return render_template("signup.html")
 
 
 # ---------- LOGIN ----------
@@ -86,19 +118,19 @@ def login():
     if request.method == "POST":
 
         user = User.query.filter_by(
-            username=request.form["username"],
-            password=request.form["password"]
+            username=request.form["username"]
         ).first()
 
-        if user:
+        if user and check_password_hash(
+            user.password,
+            request.form["password"]
+        ):
 
             session["user_id"] = user.id
 
             return redirect("/")
 
-    return render_template(
-        "login.html"
-    )
+    return render_template("login.html")
 
 
 # ---------- ADD TASK ----------
@@ -110,18 +142,21 @@ def add():
         return redirect("/login")
 
     task = Task(
-        title=request.form["task"],
+        title=request.form.get("task"),
+        description=request.form.get("description", ""),
+        priority=request.form.get("priority", "Medium"),
+        category=request.form.get("category", "General"),
+        due_date=request.form.get("due_date", ""),
         user_id=session["user_id"]
     )
 
     db.session.add(task)
-
     db.session.commit()
 
     return redirect("/")
 
 
-# ---------- COMPLETE ----------
+# ---------- COMPLETE TASK ----------
 
 @app.route("/complete/<int:id>")
 def complete(id):
@@ -129,15 +164,13 @@ def complete(id):
     task = Task.query.get(id)
 
     if task:
-
         task.status = "Completed"
-
         db.session.commit()
 
     return redirect("/")
 
 
-# ---------- DELETE ----------
+# ---------- DELETE TASK ----------
 
 @app.route("/delete/<int:id>")
 def delete(id):
@@ -145,12 +178,55 @@ def delete(id):
     task = Task.query.get(id)
 
     if task:
-
         db.session.delete(task)
-
         db.session.commit()
 
     return redirect("/")
+
+
+# ---------- PROFILE ----------
+
+@app.route("/profile")
+def profile():
+
+    if "user_id" not in session:
+        return redirect("/login")
+
+    user = User.query.get(session["user_id"])
+
+    if not user:
+        session.clear()
+        return redirect("/login")
+
+    tasks = Task.query.filter_by(
+        user_id=user.id
+    ).all()
+
+    total = len(tasks)
+
+    completed = len(
+        [t for t in tasks if t.status == "Completed"]
+    )
+
+    pending = len(
+        [t for t in tasks if t.status == "Pending"]
+    )
+
+    progress = 0
+
+    if total > 0:
+        progress = round(
+            (completed / total) * 100
+        )
+
+    return render_template(
+        "profile.html",
+        user=user,
+        total=total,
+        completed=completed,
+        pending=pending,
+        progress=progress
+    )
 
 
 # ---------- LOGOUT ----------
@@ -164,4 +240,4 @@ def logout():
 
 
 if __name__ == "__main__":
-    app.run()
+    app.run(debug=True)
