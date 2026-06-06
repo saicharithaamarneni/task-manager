@@ -86,26 +86,30 @@ def signup():
 
     if request.method == "POST":
 
-        existing_user = User.query.filter_by(
-            username=request.form["username"]
-        ).first()
+        try:
+            existing_user = User.query.filter_by(
+                username=request.form["username"]
+            ).first()
 
-        if existing_user:
+            if existing_user:
+                return redirect("/login")
+
+            hashed_password = generate_password_hash(
+                request.form["password"]
+            )
+
+            new_user = User(
+                username=request.form["username"],
+                password=hashed_password
+            )
+
+            db.session.add(new_user)
+            db.session.commit()
+
             return redirect("/login")
 
-        hashed_password = generate_password_hash(
-            request.form["password"]
-        )
-
-        new_user = User(
-            username=request.form["username"],
-            password=hashed_password
-        )
-
-        db.session.add(new_user)
-        db.session.commit()
-
-        return redirect("/login")
+        except Exception as e:
+            return str(e)
 
     return render_template("signup.html")
 
