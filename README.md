@@ -1,63 +1,88 @@
-# 📝 Task Management Application
+# 🚀 SmartTask AI - Advanced Task Management System
 
-A modern full-stack Task Management Web Application built using Flask and SQLite that allows users to create, manage, update, and track tasks efficiently.
+SmartTask AI is a modern full-stack task management application built using Flask, SQLAlchemy, SQLite, HTML, CSS, and JavaScript. It helps users organize, track, and manage tasks efficiently through a secure and responsive interface.
 
-## 🚀 Live Demo
+## 🌟 Features
 
-🔗 Live Website  
-https://task-manager-chi-two-54.vercel.app
+### 🔐 Authentication & Security
 
-## 📂 GitHub Repository
+* User Registration and Login
+* Secure Password Hashing using Werkzeug
+* Session-Based Authentication
+* User-Specific Task Management
 
-🔗 Repository  
-https://github.com/saicharithaamarneni/task-manager
+### ✅ Task Management
 
----
+* Create Tasks
+* View Tasks
+* Complete Tasks
+* Delete Tasks
+* Task Categories
+* Task Priorities (High, Medium, Low)
+* Due Dates
+* Task Descriptions
 
-## ✨ Features
+### 📊 Dashboard Analytics
 
-✅ User Authentication (Signup & Login)  
-✅ Authorization using Session Management  
-✅ Create Tasks  
-✅ View Tasks Dynamically  
-✅ Mark Tasks as Completed  
-✅ Delete Tasks  
-✅ SQLite Database Integration  
-✅ Responsive UI Design  
-✅ Attractive Login & Signup Pages  
-✅ Deployment using Vercel  
+* Total Tasks Counter
+* Completed Tasks Counter
+* Pending Tasks Counter
+* Completion Progress Percentage
+* Interactive Progress Bar
+
+### 🔍 Productivity Tools
+
+* Search Tasks
+* Filter Personal Tasks
+* Profile Dashboard
+* Productivity Statistics
+
+### 🎨 Modern UI/UX
+
+* Glassmorphism Design
+* Responsive Layout
+* Mobile-Friendly Interface
+* Professional Dashboard
+* Modern Card-Based Components
 
 ---
 
 ## 🛠️ Tech Stack
 
-### Frontend
-- HTML
-- CSS
-
 ### Backend
-- Python
-- Flask
 
-### Database
-- SQLite
-- SQLAlchemy
+* Python
+* Flask
+* SQLAlchemy
+* SQLite
+
+### Frontend
+
+* HTML5
+* CSS3
+* JavaScript
+
+### Authentication
+
+* Werkzeug Security
 
 ### Deployment
-- Vercel
-- GitHub
+
+* GitHub
+* Vercel
 
 ---
 
-## 📁 Project Structure
+## 📂 Project Structure
 
-```bash
+```text
 task-manager/
 │
 ├── app.py
 ├── models.py
 ├── requirements.txt
 ├── vercel.json
+├── README.md
 │
 ├── static/
 │   └── style.css
@@ -66,92 +91,87 @@ task-manager/
 │   ├── index.html
 │   ├── login.html
 │   ├── signup.html
-│   └── dashboard.html
+│   ├── dashboard.html
+│   └── profile.html
 │
-└── README.md
+└── database.db
 ```
 
 ---
 
 ## ⚙️ Installation
 
-Clone repository:
+### Clone Repository
 
 ```bash
 git clone https://github.com/saicharithaamarneni/task-manager.git
 ```
 
-Move into project:
+### Navigate to Project
 
 ```bash
 cd task-manager
 ```
 
-Create virtual environment:
+### Create Virtual Environment
 
 ```bash
 python -m venv venv
 ```
 
-Activate environment:
+### Activate Virtual Environment
 
-Windows:
+#### Windows
 
 ```bash
 venv\Scripts\activate
 ```
 
-Install dependencies:
+### Install Dependencies
 
 ```bash
 pip install -r requirements.txt
 ```
 
-Run application:
+### Run Application
 
 ```bash
 python app.py
 ```
 
-Open:
+Application runs at:
 
-```bash
+```text
 http://127.0.0.1:5000
 ```
 
 ---
 
-## 📸 Application Flow
+## 📈 Future Enhancements
 
-Home Page  
-→ Signup  
-→ Login  
-→ Dashboard  
-→ Add Task  
-→ Complete Task  
-→ Delete Task  
-
----
-
-## 🎯 Learning Outcomes
-
-- Full Stack Development
-- Flask Routing
-- Authentication & Authorization
-- Database Integration
-- CRUD Operations
-- Deployment Workflow
-- GitHub Version Control
+* Edit Tasks
+* Dark Mode Toggle
+* Task Sorting
+* Overdue Task Detection
+* Export Tasks to PDF/CSV
+* Email Notifications
+* AI Task Recommendations
+* Kanban Board
+* Charts & Analytics Dashboard
 
 ---
 
-## 👩‍💻 Author
+## 👩‍💻 Developer
 
 **Sai Charitha Amarneni**
 
-GitHub:  
+Artificial Intelligence & Machine Learning Engineer
+
+GitHub:
 https://github.com/saicharithaamarneni
 
 ---
 
-⭐ If you like this project, consider giving it a star.
+## 📄 License
+
+This project is developed for educational, learning, and portfolio purposes.
